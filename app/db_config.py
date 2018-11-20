@@ -1,10 +1,10 @@
 """Docstring for db_config file."""
 import psycopg2
-import os
+# import os
 from instance.config import app_config
 
-env = os.getenv("FLASK_ENV")
-url = app_config[env].DATABASE_URL
+# env = os.getenv("FLASK_ENV")
+url = app_config['testing'].DATABASE_URL
 
 
 def connection(url):
