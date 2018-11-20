@@ -1,7 +1,10 @@
 """Docstring for db_config file."""
 import psycopg2
+import os
+from instance.config import app_config
 
-url = "host = localhost dbname = sendit user = app password = app"
+env = os.getenv("FLASK_ENV")
+url = app_config[env].DATABASE_URL
 
 
 def connection(url):
@@ -51,8 +54,8 @@ def create_tables():
         try:
             cursor.execute(table)
             connection_to_db.commit()
-        except Exception as e:
-            raise e
+        except:
+            return {"message": "could not create tables"}
 
 
 def destroy_tables():
