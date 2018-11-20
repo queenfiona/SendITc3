@@ -6,15 +6,15 @@ class Config(object):
     """docstring for Config."""
 
     DEBUG = False
-    TESTING = False
+    CSRF_ENABLED = True
 
 
 class DevelopmentConfig(Config):
     """docstring for DevelopmentConfig."""
 
     DEBUG = True
-    TESTING = False
-    DATABASE_URL = os.getenv('DATABASE_URL')
+    TESTING = True
+    DATABASE_URL = os.getenv('DATABASE_DEVELOP')
 
 
 class TestingConfig(Config):
@@ -22,24 +22,26 @@ class TestingConfig(Config):
 
     DEBUG = True
     TESTING = True
-    DATABASE_URL = os.getenv('DATABASE_TESTING_URL')
+    DATABASE_URL = os.getenv('DATABASE_TEST')
 
 
 class StagingConfig(Config):
     """docstring for StagingConfig."""
 
     DEBUG = True
-    TESTING = True
 
 
 class ProductionConfig(Config):
     """docstring for ProductionConfig."""
 
-    pass
+    DEBUG = False
+    TESTING = False
+    DATABASE_URL = os.getenv('DATABASE_PRODUCTION')
 
 
 app_config = {
     "development": DevelopmentConfig,
     "testing": TestingConfig,
-    "default": DevelopmentConfig
+    "default": DevelopmentConfig,
+    "production": ProductionConfig
 }
