@@ -51,11 +51,8 @@ def create_tables():
     connection_to_db = connection(url)
     cursor = connection_to_db.cursor()
     for table in tables_to_create:
-        try:
-            cursor.execute(table)
-            connection_to_db.commit()
-        except:
-            return {"message": "could not create tables"}
+        cursor.execute(table)
+    connection_to_db.commit()
 
 
 def destroy_tables():
