@@ -4,7 +4,11 @@ from flask_restful import Api
 from .views.parcel_views import (
     ParcelOrderView, UserOrderView, AllOrdersView, DestinationView, StatusView,
     PresentLocView)
+<<<<<<< HEAD
 from .views.user_views import UserRegistration
+=======
+from .views.user_views import UserRegistration, UserLogin
+>>>>>>> e0ed436485e8680c88595a48cec7edde56c0f8b0
 
 version_2 = Blueprint('apiv2', __name__)
 
@@ -17,3 +21,8 @@ api.add_resource(StatusView, "/parcels/<int:parcel_id>/status")
 api.add_resource(PresentLocView,
                  "/parcels/<int:parcel_id>/presentLocation")
 api.add_resource(UserRegistration, "/auth/signup")
+<<<<<<< HEAD
+=======
+api.add_resource(UserLogin, "/auth/login")
+# api.add_resource(RefreshTokenView, "/auth/refresh")
+>>>>>>> e0ed436485e8680c88595a48cec7edde56c0f8b0
