@@ -28,6 +28,18 @@ class TestLoginCase(BaseCase):
         self.assertEqual(result["message"], "user already exists")
         self.assertEqual(res2.status_code, 409)
 
+    def test_user_login(self):
+        """Docstring for test_user_login method."""
+        self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.signup_data),
+            content_type='application/json')
+        res2 = self.client.post(
+            '/api/v2/auth/login', data=json.dumps(self.login_data),
+            content_type='application/json')
+        result = json.loads(res2.data)
+        self.assertEqual(result['message'], "successful login")
+        self.assertEqual(res2.status_code, 200)
+
     def test_valid_username_input(self):
         """Docstring for test_valid_username method."""
         self.data = {
