@@ -23,7 +23,7 @@ class TestingConfig(Config):
 
     DEBUG = True
     TESTING = True
-    DATABASE_URL = os.getenv('DB_TEST')
+    DATABASE_URL = os.getenv('DATABASE_TEST')
 
 
 class StagingConfig(Config):
