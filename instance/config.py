@@ -7,6 +7,7 @@ class Config(object):
 
     DEBUG = False
     CSRF_ENABLED = True
+    JWT_SECRET_KEY = "fiona"
 
 
 class DevelopmentConfig(Config):
