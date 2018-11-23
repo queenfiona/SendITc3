@@ -2,6 +2,7 @@
 from flask import make_response, jsonify
 from flask_restful import Resource, reqparse
 from ..models.parcel_models import ParcelOrder
+from ..models.user_models import UserModel
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from utils.validate_input import CheckUserInput
 
@@ -43,3 +44,25 @@ class ParcelOrderView(Resource, ParcelOrder):
             cl=current_location, pl=pickup_location)
 
         return make_response(jsonify(payload), 201)
+
+
+class UserOrderView(Resource, ParcelOrder):
+    """docstring for UserOrderView."""
+
+    @jwt_required
+    def get(self, username):
+        """Docstring for get method."""
+        user_id = get_jwt_identity()
+        user = UserModel().get_user_by_id(user_id)
+        if user and username == user[3]:
+            parcel_delivery_orders = ParcelOrder(
+            ).get_specific_user_orders(user[0])
+            payload = {
+                "message": "success",
+                "parcel orders": parcel_delivery_orders
+            }
+            return make_response(jsonify(payload), 200)
+        else:
+            return make_response(jsonify({
+                "message": "You do not have access to these parcel orders"}),
+                403)
