@@ -23,7 +23,7 @@ class ParcelOrder(object):
             "destination": kwargs['d'],
             "weight": int(kwargs['w']),
             "current_location": kwargs['cl'],
-            "pickup_location": kwargs['pl'],
+            "pickup_location": kwargs["pl"],
             "status": "not_delivered"
         }
         query = """
@@ -36,3 +36,18 @@ class ParcelOrder(object):
         cur.execute(query, payload)
         self.database.commit()
         return payload
+
+    def get_specific_user_orders(self, user_id):
+        """Docstring for get_specific_user_orders."""
+        cur = self.database.cursor()
+        cur.execute(
+            """SELECT * FROM orders WHERE user_id = (%s);""", (user_id,))
+        parcel_orders = cur.fetchall()
+        return parcel_orders
+
+    def get_parcel_by_id(self, p_id):
+        """Docstring for get_parcel_by_id."""
+        cur = self.database.cursor()
+        cur.execute("""SELECT * FROM orders WHERE parcel_id = %s;""", (p_id,))
+        one = cur.fetchone()
+        return one
