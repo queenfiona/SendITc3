@@ -60,6 +60,19 @@ class ParcelOrder(object):
         one = cur.fetchone()
         return one
 
+    def cancel_order(self, parcel_id):
+        """Docstring for change status."""
+        parser = reqparse.RequestParser()
+        parser.add_argument("status", type=str,
+                            help="status is missing", required=True)
+        status = parser.parse_args()["status"]
+        cur = self.database.cursor()
+        cur.execute(
+            """UPDATE orders SET status = (%s) WHERE parcel_id = (%s);""",
+            (status, parcel_id,))
+        self.database.commit()
+        return {"message": "order successfully cancelled"}
+
     def change_status(self, parcel_id):
         """Docstring for change status."""
         parser = reqparse.RequestParser()
