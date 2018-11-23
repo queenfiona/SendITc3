@@ -63,3 +63,25 @@ class TestLoginCase(BaseCase):
         result = json.loads(res.data)
         self.assertEqual(result['message'], "Please enter a valid username")
         self.assertEqual(res.status_code, 400)
+
+    def test_user_cannot_view_specific_order(self):
+        """Docstring for test_user_order_by_name."""
+        res = self.client.get('/api/v2/parcels/fiona',
+                              data=json.dumps(self.parcel_data),
+                              content_type='application/json',
+                              headers=self.user_headers)
+        result = json.loads(res.data)
+        self.assertEqual(result["message"],
+                         "You do not have access to these parcel orders")
+        self.assertEqual(res.status_code, 403)
+
+    def test_user_can_view_specific_order(self):
+        """Docstring for test_user_order_by_name."""
+        res = self.client.get('/api/v2/parcels/quifi',
+                              data=json.dumps(self.parcel_data),
+                              content_type='application/json',
+                              headers=self.user_headers)
+        result = json.loads(res.data)
+        self.assertEqual(result['message'],
+                         "success")
+        self.assertEqual(res.status_code, 200)
