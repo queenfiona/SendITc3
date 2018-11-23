@@ -3,7 +3,7 @@ from flask import Blueprint
 from flask_restful import Api
 from .views.user_views import UserRegistration, UserLogin
 from .views.parcel_views import (
-    ParcelOrderView, UserOrderView, AllOrdersView)
+    ParcelOrderView, UserOrderView, AllOrdersView, StatusView)
 
 version_2 = Blueprint('apiv2', __name__)
 
@@ -13,3 +13,4 @@ api.add_resource(UserLogin, "/auth/login")
 api.add_resource(ParcelOrderView, "/parcels")
 api.add_resource(UserOrderView, "/parcels/<string:username>")
 api.add_resource(AllOrdersView, "/parcels")
+api.add_resource(StatusView, "/parcels/<int:parcel_id>/status")
