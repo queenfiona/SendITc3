@@ -156,3 +156,29 @@ class PresentLocView(Resource, ParcelOrder):
 
         else:
             return {"message": "user or parcel does not exist"}, 404
+
+
+class CancelOrderView(Resource, ParcelOrder):
+    """docstring for DestinationView."""
+
+    @jwt_required
+    def put(self, parcel_id):
+        """Docstring for put method."""
+        user_id = get_jwt_identity()
+        user = UserModel().get_user_by_id(user_id)
+        parcel = ParcelOrder().get_parcel_by_id(parcel_id)
+
+        if user and parcel:
+            if user_id == parcel[1]:
+                if parcel[8] == "not_delivered":
+                    new = ParcelOrder().cancel_order(parcel_id)
+                    return make_response(jsonify(new), 200)
+                else:
+                    return {
+                        "message": "Order could not be cancelle since it is in transit"}, 400
+            else:
+                return {
+                    "message": "You have no access rights to change parcel order"}, 403
+
+        else:
+            return {"message": "user or parcel does not exist"}, 404
