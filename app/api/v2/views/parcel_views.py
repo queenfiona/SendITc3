@@ -37,11 +37,9 @@ class ParcelOrderView(Resource, ParcelOrder):
         weight = data["weight"]
         if not CheckUserInput().check_if_input_is_integer(weight):
             return {"message": "Please enter a valid weight"}, 400
-        current_location = origin
-        pickup_location = destination + " Branch Office"
         payload = ParcelOrder().create_parcel_delivery_order(
-            u=user_id, i=item_shipped, o=origin, d=destination, w=weight,
-            cl=current_location, pl=pickup_location)
+            u=user_id, i=item_shipped, o=origin, d=destination, w=weight
+        )
 
         return make_response(jsonify(payload), 201)
 
@@ -66,3 +64,25 @@ class UserOrderView(Resource, ParcelOrder):
             return make_response(jsonify({
                 "message": "You do not have access to these parcel orders"}),
                 403)
+
+
+class AllOrdersView(Resource, ParcelOrder):
+    """docstring for AllOrdersView."""
+
+    @jwt_required
+    def get(self):
+        """Docstring for get method."""
+        user_id = get_jwt_identity()
+        user = UserModel().get_user_by_id(user_id)
+        if user[4] == "admin":
+            all_parcels = ParcelOrder().get_all_orders()
+            payload = {
+                "message": "All parcel orders",
+                "parcel orders": all_parcels
+            }
+            return make_response(jsonify(payload), 200)
+        else:
+            parcel = ParcelOrder().get_parcel_by_id(user_id)
+            return {
+                "message": "success",
+                "parcel_order": parcel}, 200
