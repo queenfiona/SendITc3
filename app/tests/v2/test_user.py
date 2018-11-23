@@ -85,3 +85,23 @@ class TestLoginCase(BaseCase):
         self.assertEqual(result['message'],
                          "success")
         self.assertEqual(res.status_code, 200)
+
+    def test_admin_get_all_orders(self):
+        """Docstring for test_admin__get_all_orders."""
+        res = self.client.get('/api/v2/parcels',
+                              data=json.dumps(self.parcel_data),
+                              content_type='application/json',
+                              headers=self.admin_headers)
+        result = json.loads(res.data)
+        self.assertEqual(result['message'], "success")
+        self.assertEqual(res.status_code, 200)
+
+    def test_user_get_all_orders(self):
+        """Docstring for test_user_get_all_orders."""
+        res = self.client.get('/api/v2/parcels',
+                              data=json.dumps(self.parcel_data),
+                              content_type='application/json',
+                              headers=self.user_headers)
+        result = json.loads(res.data)
+        self.assertEqual(result['message'], "success")
+        self.assertEqual(res.status_code, 200)
