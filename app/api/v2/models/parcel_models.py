@@ -22,8 +22,8 @@ class ParcelOrder(object):
             "origin": kwargs['o'],
             "destination": kwargs['d'],
             "weight": int(kwargs['w']),
-            "current_location": kwargs['cl'],
-            "pickup_location": kwargs["pl"],
+            "current_location": kwargs['o'],
+            "pickup_location": kwargs["d"] + " Branch Office",
             "status": "not_delivered"
         }
         query = """
@@ -44,6 +44,13 @@ class ParcelOrder(object):
             """SELECT * FROM orders WHERE user_id = (%s);""", (user_id,))
         parcel_orders = cur.fetchall()
         return parcel_orders
+
+    def get_all_orders(self):
+        """Docstring for get_all_orders."""
+        cur = self.database.cursor()
+        cur.execute("""SELECT * FROM orders;""")
+        all_orders = cur.fetchall()
+        return all_orders
 
     def get_parcel_by_id(self, p_id):
         """Docstring for get_parcel_by_id."""
