@@ -22,10 +22,6 @@ class ParcelOrderView(Resource, ParcelOrder):
                             help="Destination is required", required=True)
         parser.add_argument("weight", type=int,
                             help="Weight is required", required=True)
-        parser.add_argument("current_location", type=str,
-                            help="current_location is required", required=True)
-        parser.add_argument("pickup_location", type=str,
-                            help="pickup_location is required", required=True)
 
         data = parser.parse_args()
         item_shipped = data["item_shipped"]
@@ -41,7 +37,7 @@ class ParcelOrderView(Resource, ParcelOrder):
         if not CheckUserInput().check_if_input_is_integer(weight):
             return {"message": "Please enter a valid weight"}, 400
         current_location = origin
-        pickup_location = destination + "office"
+        pickup_location = destination + " Branch Office"
         payload = ParcelOrder().create_parcel_delivery_order(
             u=user_id, i=item_shipped, o=origin, d=destination, w=weight,
             cl=current_location, pl=pickup_location)
