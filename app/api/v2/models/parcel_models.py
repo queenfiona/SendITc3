@@ -74,3 +74,22 @@ class ParcelOrder(object):
             (status, parcel_id,))
         self.database.commit()
         return {"message": "status changed successfully"}
+
+    def change_destination(self, parcel_id):
+        """Docstring for change destination."""
+        parser = reqparse.RequestParser()
+        parser.add_argument("destination", type=str,
+                            help="destination is missing", required=True)
+        destination = parser.parse_args()["destination"]
+        if not CheckUserInput().check_if_input_is_string(destination):
+            return {"message": "Please enter a valid name"}
+        cur = self.database.cursor()
+        parcel = self.get_parcel_by_id(parcel_id)
+        if not parcel:
+            return {"message": "No parcel order made"}
+        else:
+            cur.execute(
+                """UPDATE orders SET destination = (%s)
+                WHERE parcel_id = (%s);""", (destination, parcel_id))
+            self.database.commit()
+            return {"message": "destination changed successfully"}
