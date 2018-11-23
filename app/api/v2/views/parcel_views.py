@@ -134,3 +134,25 @@ class DestinationView(Resource, ParcelOrder):
 
         else:
             return {"message": "user or parcel does not exist"}, 404
+
+
+class PresentLocView(Resource, ParcelOrder):
+    """docstring for PresentLocView."""
+
+    @jwt_required
+    def put(self, parcel_id):
+        """Docstring for put method."""
+        user_id = get_jwt_identity()
+        user = UserModel().get_user_by_id(user_id)
+        parcel = ParcelOrder().get_parcel_by_id(parcel_id)
+        if user and parcel:
+            if user[4] == "admin":
+                location = ParcelOrder().change_current_location(parcel_id)
+                return make_response(jsonify(location), 200)
+
+            else:
+                return {
+                    "message": "You have no access rights to change the location of parcel order"}, 403
+
+        else:
+            return {"message": "user or parcel does not exist"}, 404
