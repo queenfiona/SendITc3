@@ -1,7 +1,8 @@
 """Docstring for version 2 parcel_models.py."""
 from flask import Flask
-from flask_restful import Api
+from flask_restful import Api, reqparse
 from app.db_config import init_db
+from utils.validate_input import CheckUserInput
 
 app = Flask(__name__)
 api = Api(app)
@@ -58,3 +59,18 @@ class ParcelOrder(object):
         cur.execute("""SELECT * FROM orders WHERE parcel_id = %s;""", (p_id,))
         one = cur.fetchone()
         return one
+
+    def change_status(self, parcel_id):
+        """Docstring for change status."""
+        parser = reqparse.RequestParser()
+        parser.add_argument("status", type=str,
+                            help="status is missing", required=True)
+        status = parser.parse_args()["status"]
+        if not CheckUserInput().check_if_input_is_string(status):
+            return {"message": "Please enter a valid name"}
+        cur = self.database.cursor()
+        cur.execute(
+            """UPDATE orders SET status = (%s) WHERE parcel_id = (%s);""",
+            (status, parcel_id,))
+        self.database.commit()
+        return {"message": "status changed successfully"}
