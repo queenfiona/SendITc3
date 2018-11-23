@@ -63,3 +63,35 @@ class TestLoginCase(BaseCase):
         result = json.loads(res.data)
         self.assertEqual(result['message'], "Please enter a valid username")
         self.assertEqual(res.status_code, 400)
+
+    def test_valid_password_input(self):
+        """Test_valid_password method."""
+        self.data = {
+            "email": "fionaityang@gmail.com",
+            "first_name": "Fiona",
+            "last_name": "Murie",
+            "password": 1,
+            "username": "quifi"
+        }
+        res = self.client.post(
+            '/api/v2/auth/signup', data=json.dumps(self.data),
+            content_type='application/json')
+        result = json.loads(res.data)
+        self.assertEqual(result['message'], "Please enter a valid password")
+        self.assertEqual(res.status_code, 400)
+
+    def test_valid_weight_input(self):
+        """Test_valid weight method."""
+        self.data = {
+            "item_shipped": "Books",
+            "origin": "Nairobi",
+            "destination": "Kisumu",
+            "weight": "g"
+        }
+
+        res = self.client.post(
+            '/api/v2/parcels', data=json.dumps(self.data),
+            content_type='application/json')
+        result = json.loads(res.data)
+        self.assertEqual(result['message'], "Please enter a valid weight")
+        self.assertEqual(res.status_code, 400)
