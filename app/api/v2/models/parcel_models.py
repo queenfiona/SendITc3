@@ -93,3 +93,17 @@ class ParcelOrder(object):
                 WHERE parcel_id = (%s);""", (destination, parcel_id))
             self.database.commit()
             return {"message": "destination changed successfully"}
+
+    def change_current_location(self, parcel_id):
+        """Docstring for change current location."""
+        parser = reqparse.RequestParser()
+        parser.add_argument("current_location", type=str,
+                            help="current location is missing", required=True)
+        current_location = parser.parse_args()["current_location"]
+        if not CheckUserInput().check_if_input_is_string(current_location):
+            return {"message": "Please enter a valid name"}
+        cur = self.database.cursor()
+        cur.execute("""UPDATE orders SET current_location = (%s)
+            WHERE parcel_id = (%s);""", (current_location, parcel_id,))
+        self.database.commit()
+        return {"message": "current location successfully changed"}
