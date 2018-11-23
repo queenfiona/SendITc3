@@ -40,13 +40,8 @@ class ParcelOrderView(Resource, ParcelOrder):
         weight = data["weight"]
         if not CheckUserInput().check_if_input_is_integer(weight):
             return {"message": "Please enter a valid weight"}, 400
-        current_location = data["current_location"]
-        if not CheckUserInput().check_if_input_is_string(item_shipped):
-            return {"message": "Please enter a valid current_location"}, 400
-        pickup_location = data['pickup_location']
-        if not CheckUserInput().check_if_input_is_string(item_shipped):
-            return {"message": "Please enter a valid pickup_location"}, 400
-
+        current_location = origin
+        pickup_location = destination + "office"
         payload = ParcelOrder().create_parcel_delivery_order(
             u=user_id, i=item_shipped, o=origin, d=destination, w=weight,
             cl=current_location, pl=pickup_location)
