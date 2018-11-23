@@ -40,6 +40,14 @@ class TestLoginCase(BaseCase):
         self.assertEqual(result['message'], "successful login")
         self.assertEqual(res2.status_code, 200)
 
+    def test_create_parcel_order(self):
+        """Docstring for test_create_parcel_order method."""
+        res = self.client.post('/api/v2/parcels',
+                               data=json.dumps(self.parcel_data),
+                               content_type='application/json',
+                               headers=self.user_headers)
+        self.assertEqual(res.status_code, 201)
+
     def test_valid_username_input(self):
         """Docstring for test_valid_username method."""
         self.data = {
