@@ -12,8 +12,8 @@ services:
   -postgresql
 
 before_script:
-  - psql -c 'create database sendit_test;' -U postgres
-  - export DATABASE_TEST="dbname='sendit_test' host='localhost' port='5432' user='postgres' password=''"
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - export DATABASE_TEST="dbname='travis_ci_test' host='localhost' port='5432' user='postgres' password=''"
   - export FLASK_ENV=testing
 
 
@@ -25,6 +25,9 @@ after_success:
 
 
 # safelist
+branches:
+  only:
+    -develop
 
 
 
