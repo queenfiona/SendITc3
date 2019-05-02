@@ -37,7 +37,7 @@ class ProductionConfig(Config):
 
     DEBUG = False
     TESTING = False
-    DATABASE_URL = os.getenv('DATABASE_PRODUCTION')
+    DATABASE_URL = os.getenv(DATABASE_URL)
 
 
 app_config = {
