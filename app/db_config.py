@@ -2,12 +2,16 @@
 import psycopg2
 import os
 from instance.config import app_config
+# from boto.s3.connection import S3Connection
+
+# s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
+
 
 env = os.getenv("FLASK_ENV")
 if not env:
     url = app_config["production"].DATABASE_URL
 else:
-    url = app_config[env].DATABASE_URL
+    url = os.environ['DATABASE_URL']
 
 
 def connection(url):
