@@ -175,7 +175,7 @@ class CancelOrderView(Resource, ParcelOrder):
                     return make_response(jsonify(new), 200)
                 else:
                     return {
-                        "message": "Order could not be cancelle since it is in transit"}, 400
+                        "message": "Order could not be cancelled since it is in transit"}, 400
             else:
                 return {
                     "message": "You have no access rights to change parcel order"}, 403

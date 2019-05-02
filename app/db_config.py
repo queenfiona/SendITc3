@@ -9,7 +9,7 @@ url = app_config[env].DATABASE_URL
 
 def connection(url):
     """Docstring for connection method."""
-    connection_to_db = psycopg2.connect(url)
+    connection_to_db = psycopg2.connect(url, sslmode='require')
     return connection_to_db
 
 
