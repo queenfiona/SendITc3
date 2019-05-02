@@ -4,7 +4,10 @@ import os
 from instance.config import app_config
 
 env = os.getenv("FLASK_ENV")
-url = app_config[env].DATABASE_URL
+if not env:
+    url = app_config["production"].DATABASE_URL
+else:
+    url = app_config[env].DATABASE_URL
 
 
 def connection(url):
