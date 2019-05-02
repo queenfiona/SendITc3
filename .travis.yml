@@ -25,9 +25,6 @@ after_success:
 
 
 # safelist
-branches:
-  only:
-    -develop
 
 
 
