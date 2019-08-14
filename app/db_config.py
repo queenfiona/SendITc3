@@ -11,7 +11,7 @@ env = os.getenv("FLASK_ENV")
 if not env:
     url = app_config["production"].DATABASE_URL
 else:
-    url = os.environ['DATABASE_URL']
+    url = "host='localhost' port='5433' dbname='sendit' user='app' password='app'"
 
 
 def connection(url):
